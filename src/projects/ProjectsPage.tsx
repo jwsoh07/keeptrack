@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { MOCK_PROJECTS } from "./MockProjects";
 import { Project } from "./Project";
 import ProjectList from "./ProjectList";
 import { ProjectAPI } from "./projectAPI";
@@ -47,10 +46,21 @@ function ProjectsPage() {
     }
 
     const saveProject = (project: Project) => {
-        let updatedProjects = projects.map((p: Project) => {
-            return p.id === project.id ? project : p;
-        })
-        setProjects(updatedProjects);
+        const api = new ProjectAPI();
+        api
+            .put(project)
+            .then((updatedProject) => {
+                console.log(updatedProject);
+                let updatedProjects = projects.map((p: Project) => {
+                    return p.id === project.id ? new Project(updatedProject) : p;
+                });
+                setProjects(updatedProjects);
+            })
+            .catch((e) => {
+                if (e instanceof Error) {
+                    setError(e.message);
+                }
+            });
     };
 
     return (
