@@ -82,4 +82,11 @@ export class ProjectAPI {
                 );
             });
     }
+
+    find(id: number) {
+        return fetch(`${this.url}/${id}`)
+            .then(this.checkStatus)
+            .then(this.parseJSON)
+            .then((item) => new Project(item));
+    }
 }

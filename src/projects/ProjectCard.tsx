@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 
 import { Project } from './Project';
 
@@ -24,11 +25,13 @@ const ProjectCard = ({ project, onEdit }: ProjectCardProps) => {
         <div className="card" key={project.id}>{project.projectName}
             <img src={project.imageUrl} alt={project.projectName} />
             <section className='section dark'>
-                <h5 className="strong">
-                    <strong>{project.projectName}</strong>
-                </h5>
-                <p>{limitTextCharacters(60, project.description)}</p>
-                <p>Budget : {project.budget.toLocaleString()}</p>
+                <Link to={'/projects/' + project.id}>
+                    <h5 className="strong">
+                        <strong>{project.projectName}</strong>
+                    </h5>
+                    <p>{limitTextCharacters(60, project.description)}</p>
+                    <p>Budget : {project.budget.toLocaleString()}</p>
+                </Link>
                 <button className=" bordered" onClick={() => handleEditClick(project)}>
                     <span className="icon-edit "></span>
                     Edit
