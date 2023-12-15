@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, memo } from 'react';
 
 import { Project } from './Project';
 import ProjectCard from './ProjectCard';
@@ -11,13 +11,14 @@ interface ProjectListProps {
 
 // TODO: Try to see if you can optimise performance by reducing unnecessary renders 
 // on the ProjectCard
+const ProjectCardMemo = memo(ProjectCard);
 
 function ProjectList({ projects, onSave }: ProjectListProps) {
     const [projectBeingEdited, setProjectBeingEdited] = useState({});
 
-    const onEdit = (project: Project) => {
+    const onEdit = useCallback((project: Project) => {
         setProjectBeingEdited(project);
-    };
+    }, []);
 
     const cancelEdit = () => {
         setProjectBeingEdited({});
@@ -31,7 +32,7 @@ function ProjectList({ projects, onSave }: ProjectListProps) {
                     project={project}
                     onSave={onSave}
                     cancelEdit={cancelEdit} /> :
-                <ProjectCard
+                <ProjectCardMemo
                     onEdit={onEdit}
                     project={project} />
             }
